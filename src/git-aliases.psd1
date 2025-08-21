@@ -5,6 +5,9 @@
 #
 # Generated on: 6/3/17
 #
+# Updated by: Mert Emirimam
+#
+# Updated on: 8/21/25
 
 @{
 
@@ -12,7 +15,7 @@
 RootModule = 'git-aliases.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.3.8'
+ModuleVersion = '1.0.0'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -21,13 +24,13 @@ ModuleVersion = '0.3.8'
 GUID = 'fe7345a7-0e7f-43d6-b924-3fe93c8f8fe7'
 
 # Author of this module
-Author = 'Saran Tanpituckpong'
+Author = 'Mert Emirimam'
 
 # Copyright statement for this module
-Copyright = '(c) Saran Tanpituckpong. All rights reserved.'
+Copyright = '(c) Saran Tanpituckpong. All rights reserved. Modifications (c) Mert Emirimam.'
 
 # Description of the functionality provided by this module
-Description = "A PowerShell module that provide partial Git aliases from Oh My Zsh's git plugin."
+Description = "A PowerShell module that provide 1-to-1 mapping of git aliases from mertemr/plugin-git"
 
 # Minimum version of the Windows PowerShell engine required by this module
 # PowerShellVersion = ''
@@ -92,13 +95,13 @@ PrivateData = @{
 	PSData = @{
 
 		# Tags applied to this module. These help with module discovery in online galleries.
-		Tags = @('git', 'alias', 'aliases', 'oh-my-zsh')
+		Tags = @('git', 'alias', 'aliases', 'fish-shell')
 
 		# A URL to the license for this module.
-		LicenseUri = 'https://github.com/gluons/powershell-git-aliases/blob/master/LICENSE'
+		LicenseUri = 'https://github.com/mertemr/powershell-git-aliases/blob/master/LICENSE'
 
 		# A URL to the main website for this project.
-		ProjectUri = 'https://github.com/gluons/powershell-git-aliases'
+		ProjectUri = 'https://github.com/mertemr/powershell-git-aliases'
 
 		# A URL to an icon representing this module.
 		# IconUri = ''
@@ -111,7 +114,7 @@ PrivateData = @{
 } # End of PrivateData hashtable
 
 # HelpInfo URI of this module
-HelpInfoURI = 'https://github.com/gluons/powershell-git-aliases'
+HelpInfoURI = 'https://github.com/mertemr/powershell-git-aliases'
 
 # Default prefix for commands exported from this module. Override the default prefix using Import-Module -Prefix.
 # DefaultCommandPrefix = ''
