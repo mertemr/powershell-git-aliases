@@ -3,33 +3,67 @@
 	Get current git branch.
 #>
 function Get-Git-CurrentBranch {
-	git symbolic-ref --quiet HEAD *> $null
-
-	if ($LASTEXITCODE -eq 0) {
-		return git rev-parse --abbrev-ref HEAD
-	} else {
-		return
-	}
+    $symbolicRef = git symbolic-ref --quiet HEAD 2>$null
+    if ($LASTEXITCODE -eq 0) {
+        return $symbolicRef -replace '^refs/heads/', ''
+    } else {
+        return git rev-parse --short HEAD 2>$null
+    }
 }
 
 function Get-Git-MainBranch {
-	git rev-parse --git-dir *> $null
+    git rev-parse --git-dir *> $null
+    if ($LASTEXITCODE -ne 0) {
+        return
+    }
 
-	if ($LASTEXITCODE -ne 0) {
-		return
+    $defaultBranchConfig = git config --get init.defaultBranch
+    if ($defaultBranchConfig -ne $null -and $defaultBranchConfig -ne '') {
+		return $defaultBranchConfig
 	}
 
-	$branches = @('main', 'trunk')
+    $branches = @('main', 'master', 'trunk')
+
+    foreach ($branch in $branches) {
+        & git show-ref -q --verify "refs/heads/$branch"
+        if ($LASTEXITCODE -eq 0) {
+            return $branch
+        }
+    }
+
+    return 'master'
+}
+
+function Get-Git-DevelopBranch {
+	$branches = @('dev', 'develop', 'development')
 
 	foreach ($branch in $branches) {
-		& git show-ref -q --verify refs/heads/$branch
-
+		& git show-ref -q --verify "refs/heads/$branch"
 		if ($LASTEXITCODE -eq 0) {
 			return $branch
 		}
 	}
 
-	return 'master'
+	Write-Error "Neither 'dev' nor 'develop' branches exist in the current repository."
+	return $null
+}
+
+function Test-BranchHasWip {
+	$currentBranch = Get-Git-CurrentBranch
+
+	if (-not $currentBranch) {
+		Write-Error "Could not determine the current branch."
+		return $false
+	}
+
+	$wipCommit = git log --pretty=format:"%s" -n 1 | Select-String -Pattern 'WIP' -CaseSensitive
+	if ($wipCommit) {
+		Write-Host "Current branch '$currentBranch' has a WIP commit." -ForegroundColor Yellow
+		return $true
+	} else {
+		Write-Host "Current branch '$currentBranch' does not have a WIP commit." -ForegroundColor Green
+		return $false
+	}
 }
 
 # Don't add `Remove-Alias` on PowerShell >= 6.
